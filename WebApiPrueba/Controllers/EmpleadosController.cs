@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
-using WebApiPrueba.Models.Dtos.Departamentos;
 using WebApiPrueba.Models.Dtos.Empleados;
 using WebApiPrueba.Models.Entities;
 

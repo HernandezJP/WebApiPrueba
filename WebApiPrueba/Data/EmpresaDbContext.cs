@@ -10,19 +10,21 @@ namespace WebApiPrueba.Data
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
 
+        public DbSet<Rol> Roles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             //Departamento
-            modelBuilder.Entity<Departamento>(e =>
+            modelBuilder.Entity<Departamento>(d =>
             {
-                e.ToTable("departamento");
-                e.HasKey(x => x.IdDepartamento);
-                e.Property(x => x.IdDepartamento).HasColumnName("id_departamento"); 
-                e.Property(x => x.NombreDepto).HasColumnName("nombre_depto").HasMaxLength(75).IsRequired();
-                e.HasIndex(x => x.NombreDepto).IsUnique();
-                e.Property(x => x.Presupuesto).HasColumnName("presupuesto").HasColumnType("decimal(18,2)").IsRequired();
+                d.ToTable("departamento");
+                d.HasKey(x => x.IdDepartamento);
+                d.Property(x => x.IdDepartamento).HasColumnName("id_departamento"); 
+                d.Property(x => x.NombreDepto).HasColumnName("nombre_depto").HasMaxLength(75).IsRequired();
+                d.HasIndex(x => x.NombreDepto).IsUnique();
+                d.Property(x => x.Presupuesto).HasColumnName("presupuesto").HasColumnType("decimal(18,2)").IsRequired();
             });
 
             modelBuilder.Entity<Empleado>(e =>
@@ -45,6 +47,16 @@ namespace WebApiPrueba.Data
                  .HasForeignKey(x => x.DepartamentoId)
                  .HasConstraintName("FK_empleado_departamento");
             });
+
+            modelBuilder.Entity<Rol>(r =>
+            {
+                 r.ToTable("rol");
+                 r.HasKey(x => x.IdRol);
+                 r.Property(x => x.IdRol).HasColumnName("id_rol").ValueGeneratedOnAdd();
+                 r.Property(x => x.NombreRol).HasColumnName("nombre_rol").HasMaxLength(75).IsRequired();
+                 r.HasIndex(x => x.NombreRol).IsUnique();
+            });
+            
 
         }
     }

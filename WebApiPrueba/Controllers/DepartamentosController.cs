@@ -52,17 +52,17 @@ namespace WebApiPrueba.Controllers
 
         //POST: api/Departamentos
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] DepartamentoCreateDto dto)
+        public async Task<IActionResult> Create([FromBody] DepartamentoCreateDto d)
         {
             // validar duplicado por nombre
-            var nameTaken = await _db.Departamentos.AnyAsync(x => x.NombreDepto == dto.NombreDepto);
+            var nameTaken = await _db.Departamentos.AnyAsync(x => x.NombreDepto == d.NombreDepto);
             if (nameTaken) return Conflict(new { mensaje = "El nombre ya existe" });
 
             var entity = new Departamento
             {
-                IdDepartamento = dto.IdDepartamento,
-                NombreDepto = dto.NombreDepto,
-                Presupuesto = dto.Presupuesto
+                IdDepartamento = d.IdDepartamento,
+                NombreDepto = d.NombreDepto,
+                Presupuesto = d.Presupuesto
             };
 
             _db.Departamentos.Add(entity);
@@ -80,19 +80,19 @@ namespace WebApiPrueba.Controllers
 
         //PUT: api/Departamentos/5
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] DepartamentoUpdateDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] DepartamentoUpdateDto d)
         {
             var entity = await _db.Departamentos.FirstOrDefaultAsync(x => x.IdDepartamento == id);
             if (entity is null) return NotFound(new { mensaje = "No encontrado" });
 
             // validar duplicado por nombre (excluyendo el mismo id)
             var nameTaken = await _db.Departamentos
-                .AnyAsync(x => x.IdDepartamento != id && x.NombreDepto == dto.NombreDepto);
+                .AnyAsync(x => x.IdDepartamento != id && x.NombreDepto == d.NombreDepto);
             if (nameTaken) return Conflict(new { mensaje = "El nombre ya existe" });
 
             // actualizar solo campos permitidos
-            entity.NombreDepto = dto.NombreDepto;
-            entity.Presupuesto = dto.Presupuesto;
+            entity.NombreDepto = d.NombreDepto;
+            entity.Presupuesto = d.Presupuesto;
 
             await _db.SaveChangesAsync();
             return NoContent();
