@@ -29,7 +29,7 @@ namespace WebApiPrueba.Data
             {
                 e.ToTable("empleado");
                 e.HasKey(x => x.IdEmpleado);                                      
-                e.Property(x => x.IdEmpleado).HasColumnName("id_empleado");
+                e.Property(x => x.IdEmpleado).HasColumnName("id_empleado").ValueGeneratedOnAdd();
                 e.Property(x => x.Nombre).HasColumnName("nombre").HasMaxLength(100).IsRequired();
                 e.Property(x => x.Apellidos).HasColumnName("apellidos").HasMaxLength(125).IsRequired();
                 e.Property(x => x.DocumentoCui).HasColumnName("documento_cui").HasMaxLength(22).IsRequired();

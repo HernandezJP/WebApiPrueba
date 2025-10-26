@@ -19,7 +19,7 @@ namespace WebApiPrueba.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var list = await _db.Departamentos
+            var departamento = await _db.Departamentos
                 .AsNoTracking()
                 .Select(d => new DepartamentoResponseDto
                 {
@@ -29,14 +29,14 @@ namespace WebApiPrueba.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(list);
+            return Ok(departamento);
         }
 
         //GET: api/Departamentos/5
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOne(int id)
         {
-            var d = await _db.Departamentos
+            var departamento = await _db.Departamentos
                 .AsNoTracking()
                 .Where(x => x.IdDepartamento == id)
                 .Select(d => new DepartamentoResponseDto
@@ -47,7 +47,7 @@ namespace WebApiPrueba.Controllers
                 })
                 .FirstOrDefaultAsync();
 
-            return d is null ? NotFound(new { mensaje = "No encontrado" }) : Ok(d);
+            return departamento is null ? NotFound(new { mensaje = "No encontrado" }) : Ok(departamento);
         }
 
         //POST: api/Departamentos
@@ -101,12 +101,12 @@ namespace WebApiPrueba.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var d = await _db.Departamentos.FindAsync(id);
-            if (d is null) return NotFound(new { mensaje = "No encontrado" });
+            var departamento = await _db.Departamentos.FindAsync(id);
+            if (departamento is null) return NotFound(new { mensaje = "No encontrado" });
 
             try
             {
-                _db.Departamentos.Remove(d);
+                _db.Departamentos.Remove(departamento);
                 await _db.SaveChangesAsync();
                 return NoContent();
             }
