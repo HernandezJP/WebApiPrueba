@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
@@ -15,6 +16,7 @@ namespace WebApiPrueba.Controllers
         public EmpleadosController(EmpresaDbContext db) => _db = db;
 
         //GET: api/Empleados
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -40,6 +42,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //GET: api/Empleados/buscar-por-cui/{cui}
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet("buscar-por-cui/{cui}")]
         public async Task<IActionResult> GetOne(string cui)
         {
@@ -66,6 +69,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //POST: api/Empleados
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] EmpleadoCreateDto e)
         {
@@ -118,6 +122,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //PUT: api/Empleados/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPut("{cui}")]
         public async Task<IActionResult> Update(string cui, [FromBody] EmpleadoUpdateDto e)
         {
@@ -151,6 +156,8 @@ namespace WebApiPrueba.Controllers
             return NoContent();
         }
 
+        //DELETE: api/Empleados/5
+        [Authorize(Policy = "SoloAdmin")]
         [HttpDelete("{cui}")]
         public async Task<IActionResult> Delete(string cui)
         {

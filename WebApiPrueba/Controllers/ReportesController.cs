@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
 using WebApiPrueba.Models.Dtos.Reportes;
 
@@ -20,6 +21,7 @@ namespace WebApiPrueba.Controllers
         }
 
         // GET api/reportes/kpis
+        [Authorize(Policy = "PuedeVerReportes")]
         [HttpGet("kpis")]
         public async Task<ActionResult<KpisDto>> GetKpis([FromQuery] DateTime? desde, [FromQuery] DateTime? hasta)
         {
@@ -44,6 +46,7 @@ namespace WebApiPrueba.Controllers
         }
 
         // GET api/reportes/cliente/{nit}
+        [Authorize(Policy = "PuedeVerReportes")]
         [HttpGet("cliente/{nit}")]
         public async Task<ActionResult<ClienteDetalleDto>> GetClienteDetalle(
             [FromRoute] string nit, [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta)
@@ -103,8 +106,9 @@ namespace WebApiPrueba.Controllers
 
             return Ok(new ClienteDetalleDto(resumen, serie));
         }
-        
+
         // GET api/reportes/cliente/{nit}/ventas
+        [Authorize(Policy = "PuedeVerReportes")]
         [HttpGet("cliente/{nit}/ventas")]
         public async Task<ActionResult<VentasListadoDto>> GetVentasDeCliente([FromRoute] string nit, [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta, [FromQuery] int page = 1, [FromQuery] int pageSize = 50)
         {

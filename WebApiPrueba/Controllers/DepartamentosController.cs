@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
-using WebApiPrueba.Models.Entities;
 using WebApiPrueba.Models.Dtos.Departamentos;
+using WebApiPrueba.Models.Entities;
 
 
 namespace WebApiPrueba.Controllers
@@ -16,6 +17,7 @@ namespace WebApiPrueba.Controllers
         public DepartamentosController(EmpresaDbContext db) => _db = db;
 
         //GET: api/Departamentos
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -33,6 +35,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //GET: api/Departamentos/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOne(int id)
         {
@@ -51,6 +54,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //POST: api/Departamentos
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DepartamentoCreateDto d)
         {
@@ -79,6 +83,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //PUT: api/Departamentos/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] DepartamentoUpdateDto d)
         {
@@ -98,6 +103,8 @@ namespace WebApiPrueba.Controllers
             return NoContent();
         }
 
+        //DELETE: api/Departamentos/5
+        [Authorize(Policy = "SoloAdmin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

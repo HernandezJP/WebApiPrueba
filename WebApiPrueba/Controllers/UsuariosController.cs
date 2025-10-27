@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
@@ -16,6 +17,7 @@ namespace WebApiPrueba.Controllers
         public UsuariosController(EmpresaDbContext db) => _db = db;
 
         //GET: api/Usuarios
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -33,6 +35,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //GET: api/Usuarios/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOne(int id)
         {
@@ -50,7 +53,8 @@ namespace WebApiPrueba.Controllers
             return usuario is null ? NotFound(new { mensaje = "No encontrado" }) : Ok(usuario);
         }
 
-        //POST: api/Usuarios    
+        //POST: api/Usuarios
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UsuarioCreateDto u)
         {
@@ -87,6 +91,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //PUT: api/Usuarios/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UsuarioUpdateDto u)
         {
@@ -106,6 +111,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //DELETE: api/Usuarios/5
+        [Authorize(Policy = "SoloAdmin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {

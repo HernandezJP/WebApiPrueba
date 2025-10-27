@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
@@ -16,6 +17,7 @@ namespace WebApiPrueba.Controllers
         public RolesController(EmpresaDbContext db) => _db = db;
 
         //GET: api/Roles
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -31,6 +33,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //GET: api/Roles/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOne(int id)
         {
@@ -47,6 +50,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //POST: api/Roles
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] RolCreateDto r)
         {
@@ -70,6 +74,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //PUT: api/Roles/5
+        [Authorize(Policy = "AdminUOperador")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] RolCreateDto r)
         {
@@ -88,6 +93,7 @@ namespace WebApiPrueba.Controllers
         }
 
         //DELETE: api/Roles/5
+        [Authorize(Policy = "SoloAdmin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
