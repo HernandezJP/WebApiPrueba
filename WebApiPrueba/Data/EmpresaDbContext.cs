@@ -9,8 +9,9 @@ namespace WebApiPrueba.Data
         }
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
-
         public DbSet<Rol> Roles { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,7 +57,29 @@ namespace WebApiPrueba.Data
                  r.Property(x => x.NombreRol).HasColumnName("nombre_rol").HasMaxLength(75).IsRequired();
                  r.HasIndex(x => x.NombreRol).IsUnique();
             });
-            
+
+            modelBuilder.Entity<Usuario>(u =>
+            {
+                u.ToTable("usuario");
+                u.HasKey(x => x.IdUsuario);
+                u.Property(x => x.IdUsuario).HasColumnName("id_usuario").ValueGeneratedOnAdd();
+                u.Property(x => x.Email).HasColumnName("email").HasMaxLength(150).IsRequired();
+                u.HasIndex(x => x.Email).IsUnique();
+                u.Property(x => x.Contrasena).HasColumnName("contrasena").HasMaxLength(100).IsRequired();
+                u.Property(x => x.IdEmpleado).HasColumnName("id_empleado").IsRequired();
+                u.Property(x => x.IdRol).HasColumnName("id_rol").IsRequired();
+
+                u.HasOne(x => x.Empleado)
+                .WithMany(e => e.Usuarios)
+                .HasForeignKey(x => x.IdEmpleado)
+                .HasConstraintName("FK_usuario_empleado");
+
+                u.HasOne(x => x.Rol)
+                .WithMany(r => r.Usuarios)
+                .HasForeignKey(x => x.IdRol)
+                .HasConstraintName("FK_usuario_rol");
+            });
+
 
         }
     }

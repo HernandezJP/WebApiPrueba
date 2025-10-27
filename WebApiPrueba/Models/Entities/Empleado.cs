@@ -14,5 +14,7 @@
 
         public int DepartamentoId { get; set; }
         public Departamento? Departamento { get; set; }
+
+        public ICollection<Usuario>? Usuarios { get; set; }
     }
 }

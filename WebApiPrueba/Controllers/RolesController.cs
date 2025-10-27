@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPrueba.Data;
 using WebApiPrueba.Models.Dtos.Roles;
+using WebApiPrueba.Models.Entities;
+
 
 namespace WebApiPrueba.Controllers
 {
@@ -51,7 +53,7 @@ namespace WebApiPrueba.Controllers
             var rol = await _db.Roles.AnyAsync(x => x.NombreRol == r.NombreRol);
             if (rol) return Conflict(new { mensaje = "El nombre ya existe" });
 
-            var Role = new Models.Entities.Rol
+            var Role = new Rol
             {
                 NombreRol = r.NombreRol
             };
